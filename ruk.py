@@ -7,6 +7,84 @@ from keras.models import model_from_json
 from keras.utils import img_to_array
 import os
 
+lang = 1 # English, 0 - Kazakh
+
+low_temperature_warning = [
+    'Температуры төмен. Су құюды қажет етпейді.',
+    'The temperature is low. Does not require pouring water.'
+]
+suitable_temperature_warning = [
+    'Температура қолайлы. Суды қалыпты мөлшерде кұю қажет.',
+    'The temperature is suitable. A moderate amount of water is required.'
+]
+high_temperature_warning = [
+    'Температура тым ыстық. Су құюдың жиілігін арттыру қажет.',
+    'The temperature is too high. It is necessary to increase the frequency of watering.'
+]
+sufficient_humidity = [
+    'Ылғалдылық жеткілікті деңгейде',
+    'Humidity at a sufficient level'
+]
+humidity_is_normal = [
+    'Ылғалдылық нормаға сай',
+    'Humidity is normal'
+]
+humidity_is_high = [
+    'Ылғалдылық едәуір жоғары',
+    'Humidity is significantly high'
+]
+insufficient_humidity = [
+    'Ылғалдылық жеткіліксіз деңгейде',
+    'Insufficient humidity'
+]
+enter_the_valid_data = [
+    'Дұрыс ақпаратты енгізіңіз',
+    'Enter the valid data'
+]
+wind_is_stable = [
+    'Жел тұрақты. Өскінге қауіп жоқ',
+    'The wind is constant. There is no danger to growth'
+]
+wind_is_unstable = [
+    'Жел тұрақсыз. Өскінге қолайсыз',
+    'The wind is unstable. Unfavorable for growth'
+]
+windspeed = [
+    'Жел жылдамдығы',
+    'Wind speed'
+]
+temperature = [
+    'Температура',
+    'Temperature'
+]
+humidity = [
+    'Ылғалдылық',
+    'Humidity'
+]
+by_water = [
+    'Су бойынша:',
+    'By water:'
+]
+by_wind = [
+    'Жел бойынша:',
+    'By wind:'
+]
+by_humidity = [
+    'Ылғалдылық бойынша:',
+    'By humidity:'
+]
+warning = [
+    'Ескерту',
+    'Warning'
+]
+enter_the_data = [
+    'Ақпаратты енгізіңіз',
+    'Enter the data'
+]
+diagnosis = [
+    'Диагноз', 'Diagnosis' 
+]
+
 
 classes = ['Apple___Apple_scab',
            'Apple___Black_rot',
@@ -150,6 +228,86 @@ disease_description = {
 """
 }
 
+disease_description_english = {
+    'Potato___Early_blight': """Symptoms and Signs
+Early blight is primarily a disease of stressed or senescing plants. Symptoms appear first on the oldest foliage. Affected leaves develop circular to angular dark brown lesions 0.12 to 0.16 inch (3–4 mm) in diameter. Concentric rings often form in lesions to produce characteristic target-board effect. Severely infected leaves turn yellow and drop. Infected tubers show a brown, corky dry rot.
+
+Comments on the Disease
+Between crops, the early blight fungus can overwinter on potato refuse in the field, in soil, on tubers, and on other solanaceous plants. Infection occurs when spores of the fungus come in contact with susceptible leaves and sufficient free moisture is present. Spore germination and infection are favored by warm weather and wet conditions from dew, rain, or sprinkler irrigation. Alternately, wet and dry periods with relatively dry, windy conditions favor spore dispersal and disease spread. Tubers can be infected as they are lifted through the soil at harvest. If sufficient moisture is present, spores germinate and infect the tubers.
+
+Management
+Early blight can be minimized by maintaining optimum growing conditions, including proper fertilization, irrigation, and management of other pests. Grow later maturing, longer season varieties. Fungicide application is justified only when the disease is initiated early enough to cause economic loss. Watch for disease symptoms during routine monitoring, and keep records of your results. When justified, apply fungicides as soon as symptoms appear; continued protection requires application at 7- to 10-day intervals.
+""", # https://ipm.ucanr.edu/agriculture/potato/early-blight/
+    'Corn_(maize)___Common_rust_': """Common corn rust, caused by the fungus Puccinia sorghi, is the most frequently occurring of the two primary rust diseases of corn in the U.S., but it rarely causes significant yield losses in Ohio field (dent) corn. Occasionally field corn, particularly in the southern half of the state, does become severely affected when weather conditions favor the development and spread of the rust fungus. Sweet corn is generally more susceptible than field corn. In years with exceptionally cool summers, and especially on late-planted fields or sweet corn, yield losses may occur when the leaves at and above the ears become severely diseased before grain fill is complete.
+
+Symptoms
+
+Although a few rust pustules can always be found in corn fields throughout the growing season, symptoms generally do not appear until after tasseling. These can be easily recognized and distinguished from other diseases by the development of dark, reddish-brown pustules (uredinia) scattered over both the upper and lower surfaces of the corn leaves (Fig. 1). These pustules may appear on any above ground part of the plant, but are most abundant on the leaves. Pustules appear oval to elongate in shape, are generally small, less than 1/4 inch long, and are surrounded by the leaf epidermal layer, where it has broken through. If infections occur while the leaves are still in the whorl, these pustules may develop in bands across the surface as the leaf expands in size.
+
+Disease Cycle and Epidemiology
+Unlike most other foliar diseases of corn, this rust fungus does not overwinter in crop residue. Spores must be blown northward during the growing season (from mid-June to mid-July) from subtropical and tropical regions where this fungus survives on corn or wood sorrel, the alternate host. Young leaves are generally more susceptible to infection than older leaves. Rust development and spread are favored by prolonged periods of cool temperatures ranging from 60° to 74°F and high relative humidity. Under these conditions, pustules develop on susceptible corn hybrids and sweet corn varieties within 7 days after infection.
+
+Occasionally, chlorosis and death of the leaves and leaf sheaths occur when infections are severe. Uredospores produced during the season are wind disseminated, spreading the pathogen to new leaves, plants and fields. As the corn plant matures pustules turn brownish-black in color due to the development of darker pigmented telia that replace uredinia and produce teliospores. In tropical regions teliospores infect the alternate host, wood sorrel (Oxalis species), however, in temperate areas such as Ohio and other states in the U.S. cornbelt, the fungus does not infect wood sorrel and the teliospores have no real epidemiological significance (do not contribute to the disease cycle).
+
+Management
+Although rust is frequently found on corn in Ohio, very rarely has there been a need for fungicide applications. This is due to the fact that there are highly resistant field corn hybrids available and most possess some degree of resistance. However, popcorn and sweet corn can be quite susceptible. In seasons where considerable rust is present on the lower leaves prior to silking and the weather is unseasonably cool and wet, an early fungicide application may be necessary for effective disease control. Numerous fungicides are available for rust control. Consult your local county extension office and C.O.R.N. website for the latest recommendations for efficacy. Always read the fungicide label for rates and application timing.
+""", # https://ohioline.osu.edu/factsheet/plpath-cer-02
+    'Tomato___Early_blight': """Early blight -Alternaria linariae (=A. tomatophila; formerly known as A. solani)
+
+Infections begin as small brown spots on older leaves that quickly enlarge. A yellow halo usually surrounds the lesions. The lesions develop a "bulls-eye" pattern of concentric rings that can be seen with a hand lens. Individual lesions enlarge and coalesce and can kill entire leaves. The disease can also move to stems and fruits and produce dark lesions.
+This is a very common foliar disease of tomato plants that can result in defoliation and reduced yields. It can also infect eggplant. The fungus overwinters in soil and on plant debris.  It can also be transmitted on seeds and transplants. Early blight is typically splash
+
+Management
+Provide adequate spacing to increase air circulation and remove all suckers that emerge from the plant base
+Monitor transplants carefully for signs of this disease.
+Keep plants well mulched to minimize soil splashing.
+Water your plants around their base. Avoid wetting foliage.
+Prune off the lowest 3-4 leaf branches once plants are well established and starting to develop fruits.
+Remove infected leaves during the growing season and remove all infected plant parts at the end of the season.
+Apply a synthetic fungicide or an organic fungicide (fixed copper) according to label directions, early in the season, when symptoms appear to slow the spread of the disease. This may be helpful where the disease causes severe blighting each year leading to reduced yields.
+Diseased plant parts can be shredded and composted if "hot composting" techniques are used (pile temperatures should exceed 120° F throughout and piles should be turned two to three times).
+""", # https://extension.umd.edu/resource/early-blight-tomatoes
+    'Tomato___Tomato_Yellow_Leaf_Curl_Virus': """Symptoms and Signs
+Tomato yellow leaf curl is a disease of tomato caused by Tomato yellow leaf curl virus. In March 2007, it was identified for the first time in California and currently has a limited distribution. An educational brochure (PDF) was created at that time and is available to print.
+
+Infected tomato plants initially show stunted and erect or upright plant growth; plants infected at an early stage of growth will show severe stunting. However, the most diagnostic symptoms are those in leaves.
+
+Leaves of infected plants are small and curl upward; and show strong crumpling and interveinal and marginal yellowing. The internodes of infected plants become shortened and, together with the stunted growth, plants often take on a bushy appearance, which is sometimes referred to as 'bonsai' or broccoli'-like growth. Flowers formed on infected plants commonly do not develop and fall off (abscise). Fruit production is dramatically reduced, particularly when plants are infected at an early age, and it is not uncommon for losses of 100% to be experienced in fields with heavily infected plants.
+
+Comments on the Disease
+Tomato yellow leaf curl virus is undoubtedly one of the most damaging pathogens of tomato, and it limits production of tomato in many tropical and subtropical areas of the world. It is also a problem in many countries that have a Mediterranean climate such as California. Thus, the spread of the virus throughout California must be considered as a serious potential threat to the tomato industry.
+
+There are a number of factors why it has not yet spread to all the major tomato-producing areas of California, including the Sacramento and San Joaquin valleys. First, its vector, Bemisia whitefly species are not typically found in these tomato-producing areas because it is intolerant of winter temperatures there. Second, the Central Valley's winter season provides a 'natural' tomato-free period, which usually goes from late November through early February. Although the virus can infect other plants, tomato is the host in which it builds-up most quickly. Thus, by having an annual 'tomato-free period', it is likely that the amount of viral inoculum (as well as whitefly populations) will be significantly reduced by the time the tomato planting season starts again in late winter-early spring. This would mean that, even if the virus is able to overwinter, it may take a long time to reach levels that cause economic damage.
+
+Tomato yellow leaf curl virus is a geminivirus (family Geminiviridae). Although it can infect a relatively wide range of plant species, tomato is the host to which the virus is best adapted and that facilitates the build-up of the virus to high incidences in the field. Other hosts include solanaceous crops, which may develop symptomless infections, and weeds (e.g., nightshade and jimsonweed).
+
+In addition, the virus causes leaf curl in certain varieties of common bean (Phaseolus vulgaris) and the ornamental plant lisianthus (Eustoma grandiflorum). A range of weeds from other families can be infected by this virus, but most of these do not develop obvious disease symptoms. It is not known how well whiteflies acquire the virus from symptomless hosts. However, it has been hypothesized that these hosts serve as a 'bridge' for the virus in the absence of tomato crops, and that perennial weeds help allow the virus to become permanently established.
+
+The primary way the virus is spread short distances is by Bemisia whitefly species. Over long distance, the virus is primarily spread through the movement of infected plants, especially tomato transplants. Because it can take up to 3 weeks for disease symptoms to develop, infected symptomless plants could be unknowingly transported. The virus also can be moved long distance by virus-carrying whiteflies that are transported on tomatoes or other plants (e.g., ornamentals) or via high winds, hurricanes, or tropical storms.
+
+Management
+Rapid and precise tests for Tomato yellow leaf curl virus are available at UC Davis and CDFA. These tests can be carried out in less than 24 hours. Anyone finding tomatoes with TYLC-like symptoms can contact their county farm advisor, Robert L. Gilbertson at UC Davis, or Tongyan Tian at CDFA.
+
+Strategies to effectively manage the disease include:
+
+Before Planting
+Select TYLCV-resistant varieties.
+Use virus- and whitefly-free transplants.
+DO NOT import tomato (or any potential whitefly host) transplants from areas known to have the virus (Florida, Georgia and Texas in the U.S.; and Mexico).
+During the Growing Season
+Plant immediately after any tomato-free period or true winter season.
+Avoid planting new fields near older fields (especially those with TYLCV-infected plants).
+Manage WHITEFLIES.
+Cover plants with floating row covers of fine mesh (Agryl or Agribon) to protect from whitefly infestations.
+Rogue diseased plants when incidence of virus infection is low.
+Practice good weed management in and around fields to the extent feasible.
+After the Growing Season
+Remove and destroy old crop residue and volunteers on a regional basis.
+A voluntary or enforced regional host-free period in areas lacking a true winter season (i.e., temperatures low enough to prevent crop cultivation and whitefly survival) might be a useful management tool. The crops to be included in a region will depend on the agroecosystem.
+""", # https://ipm.ucanr.edu/agriculture/tomato/tomato-yellow-leaf-curl/
+}
+
+
 def main(page: ft.Page):
     page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
     page.window_maximized=True
@@ -162,7 +320,7 @@ def main(page: ft.Page):
         formatted_image = format_image(path)
         result = make_prediction(loaded_model, formatted_image)
         text_message.value = f'{classes[np.argmax(result)]}'
-        text_description.value = f'{disease_description[classes[np.argmax(result)]]}'
+        text_description.value = f'{disease_description_english[classes[np.argmax(result)]]}'
         page.update()
 
 
@@ -171,11 +329,11 @@ def main(page: ft.Page):
             value = float(windspeed_input.value)
             critical_wind = 7
             if value >= critical_wind:
-                windspeed_warning.value = 'Жел тұрақсыз. Өскінге қолайсыз'
+                windspeed_warning.value = wind_is_unstable[lang]
             else:
-                windspeed_warning.value = 'Жел тұрақты. Өскінге қауіп жоқ'
+                windspeed_warning.value = wind_is_stable[lang]
         except Exception as e:
-            windspeed_warning.value = 'Дұрыс ақпаратты енгізіңіз'
+            windspeed_warning.value = enter_the_valid_data[lang]
             print(e)
         page.update()
     
@@ -187,15 +345,15 @@ def main(page: ft.Page):
             norm_humidity = 63
             low_humidity = 45
             if value < low_humidity:
-                humidity_warning.value = 'Ылғалдылық жеткіліксіз деңгейде'
+                humidity_warning.value = insufficient_humidity[lang]
             elif value > high_humidity:
-                humidity_warning.value = 'Ылғалдылық едәуір жоғары'
+                humidity_warning.value = humidity_is_high[lang]
             elif value <= norm_humidity and value >= low_humidity:
-                humidity_warning.value = 'Ылғалдылық нормаға сай'
+                humidity_warning.value = humidity_is_normal[lang]
             else:
-                humidity_warning.value = 'Ылғалдылық жеткілікті деңгейде'
+                humidity_warning.value = sufficient_humidity[lang]
         except Exception as e:
-            humidity_warning.value = 'Дұрыс ақпаратты енгізіңіз'
+            humidity_warning.value = enter_the_valid_data[lang]
             print(e)
         page.update()
 
@@ -206,13 +364,13 @@ def main(page: ft.Page):
             high_temperature = 36
             low_temperature = 14
             if value >= high_temperature:
-                temperature_warning.value = 'Температура тым ыстық. Су құюдың жиілігін арттыру қажет.'
+                temperature_warning.value = high_temperature_warning[lang]
             elif value > low_temperature:
-                temperature_warning.value = 'Температура қолайлы. Суды қалыпты мөлшерде кұю қажет.'
+                temperature_warning.value = suitable_temperature_warning[lang]
             else:
-                temperature_warning.value = 'Температуры төмен. Су құюды қажет етпейді.'
+                temperature_warning.value = low_temperature_warning[lang]
         except Exception as e:
-            temperature_warning.value = 'Дұрыс ақпаратты енгізіңіз'
+            temperature_warning.value = enter_the_valid_data[lang]
             print(e)
         page.update()
 
@@ -284,7 +442,7 @@ def main(page: ft.Page):
             ft.Row(
                 [
                     ft.Text(
-                        'Диагноз',
+                        diagnosis[lang],
                         color=ft.colors.WHITE,
                         size=38.4,
                         font_family='Inter',
@@ -377,19 +535,19 @@ def main(page: ft.Page):
     )
 
     humidity_warning = ft.Text(
-        'Ақпаратты енгізіңіз',
+        enter_the_data[lang],
         color=ft.colors.WHITE,
         size=15,
         weight=ft.FontWeight.W_500,
     )
     temperature_warning = ft.Text(
-        'Ақпаратты енгізіңіз',
+        enter_the_data[lang],
         color=ft.colors.WHITE,
         size=15,
         weight=ft.FontWeight.W_500
     )
     windspeed_warning = ft.Text(
-        'Ақпаратты енгізіңіз',
+        enter_the_data[lang],
         color=ft.colors.WHITE,
         size=15,
         weight=ft.FontWeight.W_500,
@@ -399,7 +557,7 @@ def main(page: ft.Page):
             ft.Row(
                 [
                     ft.Text(
-                        'Ескерту',
+                        warning[lang],
                         size=45,
                         font_family='Inter',
                         color=ft.colors.WHITE,
@@ -414,7 +572,7 @@ def main(page: ft.Page):
             ft.Row(
                 [
                     ft.Text(
-                        'Ылғалдылық бойынша:',
+                        by_humidity[lang],
                         size=25,
                         weight=ft.FontWeight.W_500,
                         color=ft.colors.WHITE,
@@ -442,7 +600,7 @@ def main(page: ft.Page):
             ft.Row(
                 [
                     ft.Text(
-                        'Жел бойынша:',
+                        by_wind[lang],
                         size=25,
                         weight=ft.FontWeight.W_500,
                         color=ft.colors.WHITE,
@@ -470,7 +628,7 @@ def main(page: ft.Page):
             ft.Row(
                 [
                     ft.Text(
-                        'Су бойынша:',
+                        by_water[lang],
                         size=25,
                         weight=ft.FontWeight.W_500,
                         color=ft.colors.WHITE,
@@ -527,7 +685,7 @@ def main(page: ft.Page):
             ft.Row(
                 [
                     ft.Text(
-                        'Ылғалдылық',
+                        humidity[lang],
                         size=22.39,
                         font_family='Inter',
                         color=ft.colors.WHITE,
@@ -569,7 +727,7 @@ def main(page: ft.Page):
             ft.Row(
                 [
                     ft.Text(
-                        'Температура',
+                        temperature[lang],
                         size=22.39,
                         font_family='Inter',
                         color=ft.colors.WHITE,
@@ -611,7 +769,7 @@ def main(page: ft.Page):
             ft.Row(
                 [
                     ft.Text(
-                        'Жел жылдамдығы',
+                        windspeed[lang],
                         size=22.39,
                         font_family='Inter',
                         color=ft.colors.WHITE,

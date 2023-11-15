@@ -20,3 +20,5 @@ After completing all instructions, run the interface
 The interface code is written in the ruk.py, so to run the program you should run the ruk.py file
 Also, you can run program by creating an executable file:
 ``` pyinstaller --noupx ruk.py ```
+The program is written in the python language using Flet and TensorFlow libraries.
+In addition, the hardware program is written using the Arduino programming language
